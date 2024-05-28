@@ -513,103 +513,53 @@ def create_datagram_socket(
     return sock
 
 
-def main(
-    local_interface: str,
-    multicast_snapshot_address: str,
-    multicast_snapshot_port: str,
-    multicast_incremental_address: str,
-    multicast_incremental_port: str,
-):
+class Receiver:
     """
-    Main function.
+    Receiver.
     """
 
-    loop = asyncio.new_event_loop()
+    @staticmethod
+    def main(
+        local_interface: str,
+        multicast_snapshot_address: str,
+        multicast_snapshot_port: str,
+        multicast_incremental_address: str,
+        multicast_incremental_port: str,
+    ):
+        """
+        Main function.
+        """
 
-    asyncio.set_event_loop(loop)
+        loop = asyncio.new_event_loop()
 
-    # loop.set_debug(True)
+        asyncio.set_event_loop(loop)
 
-    shared = Shared()
+        # loop.set_debug(True)
 
-    snapshot = loop.create_datagram_endpoint(
-        lambda: Snapshot(shared),
-        sock=create_datagram_socket(
-            local_interface=local_interface,
-            multicast_port=multicast_snapshot_port,
-            multicast_address=multicast_snapshot_address,
-        ),
-    )
+        shared = Shared()
 
-    incremental = loop.create_datagram_endpoint(
-        lambda: Incremental(shared),
-        sock=create_datagram_socket(
-            local_interface=local_interface,
-            multicast_port=multicast_incremental_port,
-            multicast_address=multicast_incremental_address,
-        ),
-    )
+        snapshot = loop.create_datagram_endpoint(
+            lambda: Snapshot(shared),
+            sock=create_datagram_socket(
+                local_interface=local_interface,
+                multicast_port=multicast_snapshot_port,
+                multicast_address=multicast_snapshot_address,
+            ),
+        )
 
-    tasks = asyncio.gather(snapshot, incremental)
+        incremental = loop.create_datagram_endpoint(
+            lambda: Incremental(shared),
+            sock=create_datagram_socket(
+                local_interface=local_interface,
+                multicast_port=multicast_incremental_port,
+                multicast_address=multicast_incremental_address,
+            ),
+        )
 
-    loop.run_until_complete(tasks)
+        tasks = asyncio.gather(snapshot, incremental)
 
-    loop.run_forever()
+        loop.run_until_complete(tasks)
 
-    loop.close()
+        loop.run_forever()
 
-
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(
-        prog="SBE Receiver (TEST)",
-        description="Demonstrates how to decode a SBE multicast feed using asyncio",
-    )
-
-    parser.add_argument(
-        "--loglevel",
-        type=str,
-        required=False,
-        default="info",
-        help="logging level",
-    )
-
-    parser.add_argument(
-        "--local_interface",
-        type=str,
-        required=True,
-        help="ipv4 address of a network interface",
-    )
-    parser.add_argument(
-        "--multicast_snapshot_address",
-        type=str,
-        required=False,
-        help="ipv4 address of a multicast group",
-    )
-    parser.add_argument(
-        "--multicast_snapshot_port",
-        type=int,
-        required=True,
-        help="multicast port",
-    )
-    parser.add_argument(
-        "--multicast_incremental_address",
-        type=str,
-        required=False,
-        help="ipv4 address of a multicast group",
-    )
-    parser.add_argument(
-        "--multicast_incremental_port",
-        type=int,
-        required=True,
-        help="multicast port",
-    )
-
-    args = parser.parse_args()
-
-    logging.basicConfig(level=args.loglevel.upper())
-
-    del args.loglevel
-
-    main(**vars(args))
+        loop.close()

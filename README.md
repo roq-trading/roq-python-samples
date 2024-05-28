@@ -54,6 +54,17 @@ python -m roq_samples.fix_session \
     --network_address $HOME/run/fix-bridge.sock
 ```
 
+### SBE Receiver
+
+```bash
+python -m roq_samples.sbe_receiver \
+    --local_interface 192.168.188.66 \
+    --multicast_snapshot_address 225.0.0.1 \
+    --multicast_snapshot_port 1234 \
+    --multicast_incremental_address 225.0.0.1 \
+    --multicast_incremental_port 2345
+```
+
 
 ## License
 
