@@ -6,7 +6,7 @@ Example projects demonstrating how to use Roq's Python bindings.
 ## Operating Systems
 
 * Linux (x86-64, AArch64)
-* macOS (x86-64, Arm64)
+* macOS (Arm64, x86-64)
 
 
 ## Library/Package Dependencies
