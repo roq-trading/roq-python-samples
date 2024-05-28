@@ -1,7 +1,6 @@
 # roq-python-samples
 
-Samples demonstrating how to implement various features of algorithmic trading
-solutions.
+Example projects demonstrating how to use Roq's Python bindings.
 
 
 ## Operating Systems
