@@ -48,7 +48,7 @@ python setup.py clean --all && python -m pip install . -vvv
 
 ### Strategy
 
-Demonstrates how to set up a client.
+Demonstrates how to set up a gateway client
 
 * Implements the callback handlers
 * Sends requests using the dispatcher interface
@@ -58,6 +58,8 @@ python -m roq_samples.strategy ~/run/deribit.sock
 ```
 
 ### FIX Session
+
+Demonstrates how to set up a FIX client session
 
 ```bash
 python -m roq_samples.fix_session \
@@ -69,6 +71,8 @@ python -m roq_samples.fix_session \
 ```
 
 ### SBE Receiver
+
+Demonstrates how to maintain market data from SBE incremental / snapshot multicast feeds
 
 ```bash
 python -m roq_samples.sbe_receiver \
