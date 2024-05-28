@@ -32,8 +32,7 @@ conda install -y fastcore
 ## Building
 
 ```bash
-python setup.py clean --all && \
-python -m pip install . -vvv
+python setup.py clean --all && python -m pip install . -vvv
 ```
 
 ## Using
@@ -42,6 +41,17 @@ python -m pip install . -vvv
 
 ```bash
 python -m roq_samples.strategy ~/run/deribit.sock
+```
+
+### FIX Session
+
+```bash
+python -m roq_samples.fix_session \
+    --sender_comp_id xxx \
+    --target_comp_id yyy \
+    --username foo \
+    --password bar \
+    --network_address $HOME/run/fix-bridge.sock
 ```
 
 

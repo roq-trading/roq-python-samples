@@ -825,15 +825,6 @@ class MyMixin:
         )
 
 
-class MySession(
-    MyMixin,
-    Client,
-):
-    """
-    Our workflow.
-    """
-
-
 def create_connection(
     loop,
     network_address: str,
@@ -857,90 +848,44 @@ def create_connection(
     )
 
 
-def main(
-    network_address: str,
-    sender_comp_id: str,
-    target_comp_id: str,
-    username: str,
-    password: str,
+class MySession(
+    MyMixin,
+    Client,
 ):
     """
-    Main function.
+    Our workflow.
     """
 
-    loop = asyncio.new_event_loop()
 
-    asyncio.set_event_loop(loop)
+    @staticmethod
+    def main(
+        network_address: str,
+        sender_comp_id: str,
+        target_comp_id: str,
+        username: str,
+        password: str,
+    ):
+        """
+        Main function.
+        """
 
-    # loop.set_debug(True)
+        loop = asyncio.new_event_loop()
 
-    task = create_connection(
-        loop,
-        network_address,
-        sender_comp_id,
-        target_comp_id,
-        username,
-        password,
-    )
+        asyncio.set_event_loop(loop)
 
-    loop.run_until_complete(task)
+        # loop.set_debug(True)
 
-    loop.run_forever()
+        task = create_connection(
+            loop,
+            network_address,
+            sender_comp_id,
+            target_comp_id,
+            username,
+            password,
+        )
 
-    loop.close()
+        loop.run_until_complete(task)
 
+        loop.run_forever()
 
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(
-        prog="FIX Session (TEST)",
-        description="Demonstrates how to maintain a FIX session using asyncio",
-    )
-
-    parser.add_argument(
-        "--loglevel",
-        type=str,
-        required=False,
-        default="info",
-        help="logging level",
-    )
-
-    parser.add_argument(
-        "--network_address",
-        type=str,
-        required=True,
-        help="network address of a fix server (ipv4 or path)",
-    )
-    parser.add_argument(
-        "--sender_comp_id",
-        type=str,
-        required=True,
-        help="sender component identifier",
-    )
-    parser.add_argument(
-        "--target_comp_id",
-        type=str,
-        required=True,
-        help="target component identifier",
-    )
-    parser.add_argument(
-        "--username",
-        type=str,
-        required=True,
-        help="username",
-    )
-    parser.add_argument(
-        "--password",
-        type=str,
-        required=False,
-        help="password",
-    )
-
-    args = parser.parse_args()
-
-    logging.basicConfig(level=args.loglevel.upper())
-
-    del args.loglevel
-
-    main(**vars(args))
+        loop.close()
