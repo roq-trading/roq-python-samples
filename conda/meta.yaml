@@ -19,8 +19,10 @@ requirements:
     - setuptools
     - rsync
   build:
+    - fastcore
     - roq-python
   run:
+    - fastcore
     - roq-python
 
 about:
