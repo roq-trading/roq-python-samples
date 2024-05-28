@@ -14,7 +14,26 @@ Example projects demonstrating how to use Roq's Python bindings.
 * [fastcore](https://github.com/fastai/fastcore) (Apache 2.0 License)
 
 
+## Installing
+
+If you just want to install the project.
+
+### Stable Channel
+
+```bash
+conda install -y --channel https://roq-trading.com/conda/stable roq-python-samples
+```
+
+### Unstable Channel
+
+```bash
+conda install -y --channel https://roq-trading.com/conda/unstable roq-python-samples
+```
+
+
 ## Prerequisites
+
+If you want to build from source.
 
 Install Roq's Python bindings
 
@@ -30,7 +49,7 @@ conda install -y --channel https://roq-trading.com/conda/stable roq-python
 conda install -y --channel https://roq-trading.com/conda/unstable roq-python
 ```
 
-### Fastcore
+### Third-party
 
 Some examples use the `@typedispatch` decorator from the [fastcore](https://github.com/fastai/fastcore) library
 
@@ -40,9 +59,12 @@ conda install -y fastcore
 
 ## Building
 
+If you want to build from source.
+
 ```bash
 python setup.py clean --all && python -m pip install . -vvv
 ```
+
 
 ## Using
 
