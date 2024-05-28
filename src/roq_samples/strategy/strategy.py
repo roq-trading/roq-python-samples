@@ -318,109 +318,61 @@ class Strategy(roq.client.Handler):
         """
         print(f"custom_metrics_update={custom_metrics_update}")
 
+    @staticmethod
+    def main(connections: list[str]):
+        """
+        The main function.
+        """
 
-def main(connections: list[str]):
-    """
-    The main function.
-    """
+        # settings
+        # note! this is not yet used... (not properly implemented)
 
-    # settings
-    # note! this is not yet used... (not properly implemented)
+        settings = roq.client.Settings2(
+            app={
+                "name": "trader",
+            },
+            loop={
+                "timer_freq": timedelta(milliseconds=100),
+            },
+            service={},
+            common={},
+        )
 
-    settings = roq.client.Settings2(
-        app={
-            "name": "trader",
-        },
-        loop={
-            "timer_freq": timedelta(milliseconds=100),
-        },
-        service={},
-        common={},
-    )
+        # configuration
 
-    # configuration
+        config = roq.client.Config(
+            settings=roq.client.Settings(
+                order_cancel_policy=roq.OrderCancelPolicy.BY_ACCOUNT,  # note! auto-cancel on disconnect
+            ),
+            accounts={"A1"},
+            symbols={
+                "deribit": {"BTC-.*", "ETH-.*"},
+            },
+        )
 
-    config = roq.client.Config(
-        settings=roq.client.Settings(
-            order_cancel_policy=roq.OrderCancelPolicy.BY_ACCOUNT,  # note! auto-cancel on disconnect
-        ),
-        accounts={"A1"},
-        symbols={
-            "deribit": {"BTC-.*", "ETH-.*"},
-        },
-    )
+        # dispatcher
 
-    # dispatcher
+        dispatcher = roq.client.Dispatcher(settings, config, connections)
 
-    dispatcher = roq.client.Dispatcher(settings, config, connections)
+        # strategy
 
-    # strategy
+        strategy = Strategy(dispatcher)
 
-    strategy = Strategy(dispatcher)
+        # signal handler
 
-    # signal handler
+        def signal_handler(sig, frame):
+            dispatcher.stop()  # note! detected on next call to dispatch()
 
-    def signal_handler(sig, frame):
-        dispatcher.stop()  # note! detected on next call to dispatch()
+        signal.signal(signal.SIGINT, signal_handler)
 
-    signal.signal(signal.SIGINT, signal_handler)
+        # start the i/o loop (timers, connectors, etc.)
 
-    # start the i/o loop (timers, connectors, etc.)
+        dispatcher.start()
 
-    dispatcher.start()
+        # dispatch (loop) until done
 
-    # dispatch (loop) until done
-
-    try:
-        while dispatcher.dispatch(strategy):
-            pass  # note! this is an option to do other work
-    except Exception as err:
-        print(f"{err}")
-
-
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(
-        prog="Strategy (TEST)",
-        description="Demonstrates how to implement a client",
-    )
-
-    parser.add_argument(
-        "--loglevel",
-        type=str,
-        required=False,
-        default="info",
-        help="logging level",
-    )
-
-    parser.add_argument("connections", metavar="N", type=str, nargs="+", help="connections")
-
-    args = parser.parse_args()
-
-    import logging
-
-    logging.basicConfig(level=args.loglevel.upper())
-
-    del args.loglevel
-
-    logger = logging.getLogger("main")
-
-    def log_handler(level, message):
-        """log handler"""
-        if level == roq.logging.Level.DEBUG:
-            logger.debug(message)
-        elif level == roq.logging.Level.INFO:
-            logger.info(message)
-        elif level == roq.logging.Level.WARNING:
-            logger.warning(message)
-        elif level == roq.logging.Level.ERROR:
-            logger.error(message)
-        elif level == roq.logging.Level.CRITICAL:
-            logger.critical(message)
-        else:
-            sys.exit()
-
-    roq.logging.set_handler(log_handler)
-
-    main(args.connections)
+        try:
+            while dispatcher.dispatch(strategy):
+                pass  # note! this is an option to do other work
+        except Exception as err:
+            print(f"{err}")
