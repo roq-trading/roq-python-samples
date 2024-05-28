@@ -6,26 +6,21 @@ source:
   git_url: ..
 
 build:
+  noarch: generic
   number: {{ ROQ_BUILD_NUMBER if ROQ_BUILD_NUMBER is defined else GIT_DESCRIBE_NUMBER }}
   script_env:
     - ROQ_BUILD_NUMBER
     - ROQ_BUILD_TYPE
-    - CPPFLAGS=-D_LIBCPP_DISABLE_AVAILABILITY  # [osx]
   script: python -m pip install . -vvv
 
-# https://conda-forge.org/blog/posts/2020-10-29-macos-arm64/#how-to-add-a-osx-arm64-build-to-a-feedstock
 requirements:
   build:
-    - {{ compiler('cxx') }}
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-    - rsync                                  # [build_platform != target_platform]
-  host:
-    - python {{ python }}
+    - python
+    - setuptools
+    - rsync
   build:
     - roq-python
   run:
-    - python
     - roq-python
 
 about:
