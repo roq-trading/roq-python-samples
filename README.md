@@ -48,6 +48,11 @@ python setup.py clean --all && python -m pip install . -vvv
 
 ### Strategy
 
+Demonstrates how to set up a client.
+
+* Implements the callback handlers
+* Sends requests using the dispatcher interface
+
 ```bash
 python -m roq_samples.strategy ~/run/deribit.sock
 ```
