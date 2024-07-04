@@ -15,10 +15,12 @@ build:
 
 requirements:
   build:
+    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - python
     - setuptools
     - rsync
   host:
+    - python {{ python }}
     - fastcore
     - roq-python
   run:
