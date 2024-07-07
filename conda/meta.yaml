@@ -15,8 +15,8 @@ build:
 
 requirements:
   build:
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-    - python
+    - cross-python_{{ target_platform }}  # [build_platform != target_platform]
+    - python                              # [build_platform != target_platform]
     - setuptools
     - rsync
   host:
