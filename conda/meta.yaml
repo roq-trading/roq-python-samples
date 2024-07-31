@@ -18,6 +18,7 @@ requirements:
     - python
     - fastcore
     - roq-python
+    - setuptools
   run:
     - fastcore
     - roq-python
