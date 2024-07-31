@@ -11,12 +11,9 @@ build:
   script_env:
     - ROQ_BUILD_NUMBER
     - ROQ_BUILD_TYPE
-  script: python -m pip install . -vvv
+  script: {{ PYTHON }} -m pip install . -vvv
 
 requirements:
-  build:
-    - python {{ python }}
-    - setuptools
   host:
     - python
     - fastcore
