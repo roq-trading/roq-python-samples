@@ -16,10 +16,10 @@ build:
 requirements:
   build:
     - python {{ python }}
+    - setuptools
   host:
     - fastcore
     - roq-python
-    - setuptools
   run:
     - fastcore
     - roq-python
