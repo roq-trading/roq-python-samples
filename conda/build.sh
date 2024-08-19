@@ -6,8 +6,6 @@ env | sort
 
 echo -e "\033[1;34m--- PIP ---\033[0m"
 
-ls -ahl
-
-$PYTHON -m pip install . -vvv
+python -m pip install . -vvv
 
 echo -e "\033[1;34m--- DONE ---\033[0m"
