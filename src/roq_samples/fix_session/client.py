@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Copyright (c) 2017-2025, Hans Erik Thrane
+Copyright (c) 2017-2026, Hans Erik Thrane
 
 Demonstrates how to maintain a FIX session using asyncio
 """

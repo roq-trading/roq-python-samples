@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Copyright (c) 2017-2025, Hans Erik Thrane
+Copyright (c) 2017-2026, Hans Erik Thrane
 
 Demonstrates how to connect to a gateway and receive the various callbacks.
 
